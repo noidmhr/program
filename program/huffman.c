@@ -141,11 +141,15 @@ HuffmanNode *build_huffman_tree(Frequency freq[], int n) {
 void generate_codes(HuffmanNode *root, char **codes, int top, CodeEntry *code_table) {
     static int index = 0;  // 编码表的索引
     if (root->left) {
-        codes[top] = '0';  // 左子树路径为 0
+        codes[top] = (char *)malloc(2);  // 分配内存
+        codes[top][0] = '0';
+        codes[top][1] = '\0';
         generate_codes(root->left, codes, top + 1, code_table);  // 递归生成左子树的编码
     }
     if (root->right) {
-        codes[top] = '1';  // 右子树路径为 1
+        codes[top] = (char *)malloc(2);  // 分配内存
+        codes[top][0] = '1';
+        codes[top][1] = '\0';
         generate_codes(root->right, codes, top + 1, code_table);  // 递归生成右子树的编码
     }
     if (!root->left && !root->right) {  // 如果是叶子节点
@@ -155,7 +159,7 @@ void generate_codes(HuffmanNode *root, char **codes, int top, CodeEntry *code_ta
             perror("Memory allocation failed for code");
             return;
         }
-        strncpy(code_table[index].code, codes, top);  // 复制编码
+        strncpy(code_table[index].code, codes[top], top);  // 复制编码
         code_table[index].code[top] = '\0';  // 字符串结束符
         code_table[index].code_length = top;  // 设置编码长度
         index++;  // 索引加 1
@@ -176,7 +180,7 @@ void heap_sort(Frequency arr[], int n) {
     }
 }
 
-// 计算 FNV-1a 64 位哈希值
+// 计算 FNV - 1a 64 位哈希值
 uint64_t fnv1a_64(const void *data, size_t length) {
     uint64_t hash = FNV1A_64_INIT;  // 初始化哈希值
     const uint8_t *byte_data = (const uint8_t *)data;  // 将数据转换为字节数组
@@ -267,4 +271,4 @@ HuffmanNode *build_decode_tree(DecodeEntry *table, int n) {
         current->byte = table[i].byte;
     }
     return root;
-}    
+}

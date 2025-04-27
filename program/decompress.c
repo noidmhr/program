@@ -1,4 +1,5 @@
 #include "huffman.h"
+#include <time.h>  // 添加头文件
 
 // 从文件中加载编码表
 DecodeEntry *load_code_table(const char *filename, long *original_size) {
@@ -20,7 +21,7 @@ DecodeEntry *load_code_table(const char *filename, long *original_size) {
         uint8_t byte;  // 字节值
         int code_length;  // 编码长度
         uint8_t bits[16];  // 编码字节数组
-        sscanf(line, "0x%02x %d ", &byte, &code_length);  // 读取字节值和编码长度
+        sscanf(line, "0x%02hhx %d ", &byte, &code_length);  // 修改格式说明符
         char *ptr = strstr(line, "0x");  // 查找编码字节的起始位置
         int count = 0;  // 编码字节的数量
         while (ptr) {
@@ -99,4 +100,4 @@ void decompress_file(const char *input_file, const char *output_file, const char
     fclose(out);  // 关闭输出文件
     free(data);  // 释放数据缓冲区内存
     free(table);  // 释放解码表内存
-}    
+}

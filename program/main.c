@@ -27,6 +27,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // 添加函数声明
+    void compress_file(const char *input_file, const char *output_file, const char *code_file, const char *sender, const char *receiver, bool encrypt);
+    void decompress_file(const char *input_file, const char *output_file, const char *code_file, bool decrypt);
+
     if (strcmp(mode, "compress") == 0) {
         compress_file(input, output, code_file, sender, receiver, encrypt);  // 调用压缩函数
         printf("Compression successful!\n");  // 打印压缩成功信息
@@ -51,4 +55,4 @@ int main(int argc, char *argv[]) {
     }
 
     return 0;
-}    
+}
